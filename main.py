@@ -1,25 +1,26 @@
-from os import abort
-
 from requests import request
-from flask import Flask, make_response, jsonify
-from data1 import db_session, news_api
+from flask import Flask
+from data1 import db_session, news_api, news_resources
 from data1.users import User
 from data1.news import News
 from forms.news import NewsForm
 from forms.user import RegisterForm, LoginForm
 from flask import render_template, redirect
-import datetime
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_restful import abort, Api
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
+app = Flask(__name__)
+api = Api(app)
 
 
 def main():
     db_session.global_init("db/blogs.db")
-    user = User()
+    db_sess = db_session.create_session()
+    '''user = User()
     user.name = "Пользователь 1"
     user.about = "биография пользователя 1"
     user.email = "email@email.ru"
@@ -36,7 +37,7 @@ def main():
     print(user)
     user.name = "Измененное имя пользователя"
     user.created_date = datetime.datetime.now()
-    db_sess.commit()
+    db_sess.commit()'''
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -180,8 +181,20 @@ def main():
     from flask import make_response
 
     @app.errorhandler(404)
-    def not_found(error):
-        return make_response(jsonify({'error': 'Not found'}), 404)
+    def abort_if_news_not_found(news_id):
+        session = db_session.create_session()
+        news = session.query(News).get(news_id)
+        if not news:
+            abort(404, message=f"News {news_id} not found")
+
+    # def not_found(error):
+    #    return make_response(jsonify({'error': 'Not found'}), 404)
+
+    # для списка объектов
+    api.add_resource(news_resources.NewsListResource, '/api/v2/news')
+
+    # для одного объекта
+    api.add_resource(news_resources.NewsResource, '/api/v2/news/<int:news_id>')
 
 
 def main_test():

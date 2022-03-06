@@ -23,6 +23,9 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
                                      default=datetime.datetime.now)
     news = orm.relation("News", back_populates='user')
 
+    def __repr__(self):
+        return f'<User> {self.id} {self.name} {self.email}'
+
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
 
