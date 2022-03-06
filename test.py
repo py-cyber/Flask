@@ -17,8 +17,8 @@ print(post('http://localhost:5000/api/news',
                  'user_id': 1,
                  'is_private': False}).json())
 
-#print(delete('http://localhost:5000/api/news/999').json())
+# print(delete('http://localhost:5000/api/news/999').json())
 
-#print(delete('http://localhost:5000/api/news/1').json())
+# print(delete('http://localhost:5000/api/news/1').json())
 
 print(get('http://localhost:5000/api/news').json())

@@ -206,3 +206,6 @@ def main_test():
 if __name__ == '__main__':
     main()
     main_test()
+
+# alembic revision --autogenerate -m "добавили признак публикации"
+# alembic upgrade head
