@@ -19,24 +19,24 @@ login_manager.init_app(app)
 
 def main():
     db_session.global_init("db/blogs.db")
-    user = User()
-    user.name = "Пользователь 1"
-    user.about = "биография пользователя 1"
-    user.email = "email@email.ru"
-    db_sess = db_session.create_session()
-    db_sess.add(user)
-    db_sess.commit()
-    user = db_sess.query(User).first()
-    print(user.name)
-    for user in db_sess.query(User).all():
-        print(user)
-    for user in db_sess.query(User).filter(User.id > 1, User.email.notilike("%1%")):
-        print(user)
-    user = db_sess.query(User).filter(User.id == 1).first()
-    print(user)
-    user.name = "Измененное имя пользователя"
-    user.created_date = datetime.datetime.now()
-    db_sess.commit()
+    #user = User()
+    #user.name = "Пользователь 1"
+    #user.about = "биография пользователя 1"
+    #user.email = "email@email.ru"
+    #db_sess = db_session.create_session()
+    #db_sess.add(user)
+    #db_sess.commit()
+    #user = db_sess.query(User).first()
+    #print(user.name)
+    #for user in db_sess.query(User).all():
+    #    print(user)
+    #for user in db_sess.query(User).filter(User.id > 1, User.email.notilike("%1%")):
+    #    print(user)
+    #user = db_sess.query(User).filter(User.id == 1).first()
+    #print(user)
+    #user.name = "Измененное имя пользователя"
+    #user.created_date = datetime.datetime.now()
+    #db_sess.commit()
 
     @login_manager.user_loader
     def load_user(user_id):
